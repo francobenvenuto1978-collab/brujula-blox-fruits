@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Brújula del Tercer Mar - Blox Fruits</title>
+<style>
+:root{--bg:#eaf4f2;--card:#ffffff;--ink:#0e2a47;--mute:#4f6b80;--line:#c4dad6;--sea:#1c6a8f;--gold:#f2b632;--goldink:#3a2a00;--ok:#1f8a5b;--danger:#d9534f;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1c30;--card:#10304d;--ink:#e8f3f1;--mute:#9bb6c6;--line:#24506f;--sea:#5cc0e6;--gold:#f2b632;--goldink:#3a2a00;--ok:#4fd195;--danger:#ff6b6b}}
+:root[data-theme="dark"]{--bg:#0a1c30;--card:#10304d;--ink:#e8f3f1;--mute:#9bb6c6;--line:#24506f;--sea:#5cc0e6;--gold:#f2b632;--goldink:#3a2a00;--ok:#4fd195;--danger:#ff6b6b}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Trebuchet MS","Segoe UI",Verdana,sans-serif}
+main{max-width:540px;margin:0 auto;padding:16px}
+h1{font-size:26px;margin:4px 0 2px;letter-spacing:-.3px;color:var(--sea)}
+.sub{color:var(--mute);margin:0 0 14px;font-size:14px}
+nav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+nav button{flex:1 1 22%;padding:10px 4px;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:0.2s}
+nav button[aria-selected="true"]{background:var(--gold);color:var(--goldink);border-color:var(--gold)}
+section{display:none}section.on{display:block}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card h2{font-size:17px;margin:0 0 10px;display:flex;align-items:center;gap:6px}
+label{display:block;font-size:13px;color:var(--mute);margin:8px 0 3px}
+input[type=number],input[type=text],select{width:100%;padding:10px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);font:inherit;font-size:16px}
+input:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid var(--sea);outline-offset:2px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.res{margin-top:12px;padding:12px;border-radius:10px;background:var(--bg);border-left:6px solid var(--gold)}
+.big{font-size:24px;font-weight:800}
+.small{font-size:13px;color:var(--mute)}
+.isla{border-left:6px solid var(--sea);padding-left:12px}
+.isla b{font-size:20px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
+.me td{background:var(--bg);font-weight:800}
+ul{list-style:none;padding:0;margin:0}
+li label{display:flex;gap:10px;align-items:flex-start;margin:0;padding:9px 0;border-bottom:1px solid var(--line);font-size:15px;color:var(--ink)}
+li input[type=checkbox]{width:22px;height:22px;margin-top:1px;accent-color:var(--ok);flex:none}
+li input:checked+span{text-decoration:line-through;color:var(--mute)}
+.prog{height:10px;background:var(--bg);border-radius:6px;overflow:hidden;margin:4px 0 8px}
+.prog i{display:block;height:100%;background:var(--ok);width:0;transition:width .25s}
+.aviso{font-size:12.5px;color:var(--mute);margin-top:10px}
+.boss{padding:10px 0;border-bottom:1px solid var(--line)}
+.boss b{font-size:16px}
+.chip{display:inline-block;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:700;background:var(--bg);border:1px solid var(--line);margin-left:6px}
+.chip.si{background:var(--ok);color:#fff;border-color:var(--ok)}
+ul.pl li{padding:7px 0;border-bottom:1px solid var(--line);font-size:15px}
+.btn-main{width:100%;padding:12px;background:var(--sea);color:#fff;border:none;border-radius:10px;font:inherit;font-weight:700;font-size:16px;cursor:pointer;margin-top:10px;transition:0.2s}
+.btn-main:hover{opacity:0.9}
+.trade-res{font-size:22px;font-weight:800;text-align:center;padding:10px;border-radius:10px;margin-top:10px}
+.trade-w{background:rgba(31,138,91,0.2);color:var(--ok);border:2px solid var(--ok)}
+.trade-f{background:rgba(242,182,50,0.2);color:var(--goldink);border:2px solid var(--gold)}
+.trade-l{background:rgba(217,83,79,0.2);color:var(--danger);border:2px solid var(--danger)}
+.timer-box{text-align:center;padding:20px;background:var(--bg);border-radius:12px;margin:10px 0}
+.timer-num{font-size:42px;font-weight:900;font-family:monospace;color:var(--sea)}
+.ruleta-box{text-align:center;padding:20px;background:var(--bg);border-radius:12px;border:2px dashed var(--sea)}
+.fruta-anim{font-size:28px;font-weight:800;min-height:40px;margin:15px 0;display:flex;align-items:center;justify-content:center;gap:10px}
+.inv-tag{display:inline-block;padding:4px 8px;background:var(--card);border:1px solid var(--line);border-radius:6px;font-size:12px;margin:3px}
+.chat-container{height:280px;overflow-y:auto;border:2px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);margin-bottom:10px;display:flex;flex-direction:column;gap:8px}
+.chat-msg{padding:8px 12px;border-radius:10px;max-width:85%;font-size:14px;line-height:1.4}
+.msg-user{align-self:flex-end;background:var(--sea);color:#fff;border-bottom-right-radius:2px}
+.msg-ia{align-self:flex-start;background:var(--card);color:var(--ink);border:1px solid var(--line);border-bottom-left-radius:2px}
+.chat-input-box{display:flex;gap:8px}
+</style>
+</head>
+<body>
+<main>
+<h1>⚓ Brújula del Tercer Mar</h1>
+<p class="sub">Tu súper app para Blox Fruits. Guías, calculadoras y herramientas pro.</p>
+<nav role="tablist">
+<button role="tab" aria-selected="true" data-t="calc">Calculadora</button>
+<button role="tab" aria-selected="false" data-t="ia">IA Blox 🤖</button>
+<button role="tab" aria-selected="false" data-t="trade">Tradeos ⚖️</button>
+<button role="tab" aria-selected="false" data-t="timer">Reloj Fruta ⏱️</button>
+<button role="tab" aria-selected="false" data-t="ruleta">Ruleta 🎰</button>
+<button role="tab" aria-selected="false" data-t="isla">Isla y quest</button>
+<button role="tab" aria-selected="false" data-t="jefes">Jefes</button>
+<button role="tab" aria-selected="false" data-t="mar">Mar y tips</button>
+<button role="tab" aria-selected="false" data-t="frutas">Frutas</button>
+<button role="tab" aria-selected="false" data-t="armas">Armas</button>
+<button role="tab" aria-selected="false" data-t="raids">Raids</button>
+<button role="tab" aria-selected="false" data-t="lista">Checklists 🧬</button>
+</nav>
+
+<section id="calc" class="on">
+<div class="card"><h2>¿Cuánto falta para subir de nivel?</h2>
+<div class="row"><div><label for="n1">Mi nivel</label><input id="n1" type="number" value="1915" inputmode="numeric"></div>
+<div><label for="n2">Nivel meta</label><input id="n2" type="number" value="2550" inputmode="numeric"></div></div>
+<div class="row"><div><label for="rn">Niveles por hora</label><input id="rn" type="number" value="50" inputmode="numeric"></div>
+<div><label for="hd">Horas por día</label><input id="hd" type="number" value="2" step="0.5" inputmode="decimal"></div></div>
+<div class="res" id="r1"></div></div>
+
+<div class="card"><h2>¿Cuánto falta para juntar Beli?</h2>
+<div class="row"><div><label for="b1">Mi Beli</label><input id="b1" type="number" value="2000000" inputmode="numeric"></div>
+<div><label for="b2">Beli meta</label><input id="b2" type="number" value="5000000" inputmode="numeric"></div></div>
+<div class="row"><div><label for="bh">Beli por hora</label><input id="bh" type="number" value="150000" inputmode="numeric"></div>
+<div><label for="bd">Horas por día</label><input id="bd" type="number" value="2" step="0.5" inputmode="decimal"></div></div>
+<div class="res" id="r2"></div></div>
+<p class="aviso">Medí tu ritmo real: anotá tu nivel y tu Beli, jugá una hora y poné acá lo que subió.</p>
+</section>
+
+<!-- SECCIÓN: IA ASISTENTE DE BLOX FRUITS -->
+<section id="ia">
+<div class="card">
+<h2>🤖 IA Asistente de Blox Fruits</h2>
+<p class="small">Pregúntale lo que quieras sobre jefes, espadas, frutas, razas V4, accesorios o cómo farmear rápido:</p>
+<div class="chat-container" id="chatBox">
+<div class="chat-msg msg-ia">¡Hola Franco! Soy la IA Asistente de Blox Fruits 🏴‍☠️. ¿Qué duda tienes hoy sobre el juego?</div>
+</div>
+<div class="chat-input-box">
+<input type="text" id="chatInput" placeholder="Ej: ¿Cómo consigo la CDK? o ¿Qué fruta es mejor para farmear?" onkeypress="handleKeyPress(event)">
+<button class="btn-main" style="margin:0;width:auto;padding:10px 18px" onclick="enviarPreguntaIA()">Enviar</button>
+</div>
+</div>
+</section>
+
+<!-- SECCIÓN: TRADE CALCULATOR -->
+<section id="trade">
+<div class="card">
+<h2>⚖️ Calculadora de Tradeos</h2>
+<p class="small">Selecciona la fruta que vas a dar y la que vas a recibir para evaluar el intercambio:</p>
+<div class="row">
+<div>
+<label for="tf1">Tu Fruta (Ofreces)</label>
+<select id="tf1"></select>
+</div>
+<div>
+<label for="tf2">Su Fruta (Recibes)</label>
+<select id="tf2"></select>
+</div>
+</div>
+<button class="btn-main" onclick="evaluarTrade()">Evaluar Tradeo</button>
+<div id="resTrade"></div>
+</div>
+</section>
+
+<!-- SECCIÓN: TEMPORIZADOR DE FRUTAS -->
+<section id="timer">
+<div class="card">
+<h2>⏱️ Temporizador de Aparición de Frutas</h2>
+<p class="small">Las frutas físicas aparecen en los mapas cada 60 minutos (o 45 min el fin de semana). ¡Inicia el reloj para que te avise!</p>
+<div class="timer-box">
+<div class="timer-num" id="timeDisp">60:00</div>
+<div style="display:flex;gap:10px;justify-content:center;margin-top:15px">
+<button class="btn-main" style="margin:0;width:auto;padding:10px 20px" onclick="toggleTimer()" id="btnTimer">Iniciar 60m</button>
+<button class="btn-main" style="margin:0;width:auto;padding:10px 20px;background:var(--mute)" onclick="resetTimer()">Reiniciar</button>
+</div>
+</div>
+<p class="aviso">💡 Mantén abierta esta pestaña. La app emitirá un sonido de alarma cuando el tiempo llegue a cero.</p>
+</div>
+</section>
+
+<!-- SECCIÓN: RULETA GACHA CON BOTÓN DE GANAR BELI -->
+<section id="ruleta">
+<div class="card">
+<h2>🎰 Ruleta de Frutas (Gacha Virtual)</h2>
+<p class="small">Prueba tu suerte comprando una fruta aleatoria con tus Belis virtuales de la app.</p>
+<div class="ruleta-box">
+<div>Mi Beli Virtual: <b id="ruletaBeli" style="color:var(--ok);font-size:18px">$500,000</b></div>
+<div class="fruta-anim" id="ruletaRes">❓ ¡Gira la ruleta!</div>
+<button class="btn-main" onclick="girarRuleta()">Tirar Ruleta ($100,000 Beli)</button>
+<button class="btn-main" style="background:var(--ok); margin-top: 8px;" onclick="ganarBeliGratis()">🎮 ¡Ganar $200,000 Beli Virtual!</button>
+</div>
+<h3 style="font-size:15px;margin-top:15px">Tu Inventario Virtual:</h3>
+<div id="invFrutas"><span class="small">Aún no tienes frutas en tu inventario virtual.</span></div>
+</div>
+</section>
+
+<section id="isla">
+<div class="card"><h2>¿A qué isla voy?</h2>
+<label for="nv">Mi nivel</label><input id="nv" type="number" value="1915" inputmode="numeric">
+<div class="res isla" id="ri"></div></div>
+<div class="card"><h2>Mapa de niveles</h2><table id="tb"></table>
+<p class="aviso">Los rangos son aproximados y cambian con las actualizaciones. Mirá siempre qué nivel pide el NPC de la quest en el juego.</p></div>
+</section>
+
+<section id="lista">
+<div class="card"><h2>Instinct V2</h2><div class="small" id="p1"></div><div class="prog"><i id="g1"></i></div><ul id="l1"></ul></div>
+<div class="card">
+<h2>Raza V4: Camino Completo</h2>
+<label for="selRaza">Selecciona tu Raza:</label>
+<select id="selRaza" onchange="cambiarRaza()">
+<option value="Angel">Ángel</option>
+<option value="Human">Humano</option>
+<option value="Mink">Rabbit (Mink)</option>
+<option value="Shark">Shark (Fishman)</option>
+<option value="Ghoul">Ghoul</option>
+<option value="Cyborg">Cyborg</option>
+<option value="Draco">Draco</option>
+</select>
+<div class="small" id="p2" style="margin-top:10px"></div><div class="prog"><i id="g2"></i></div><ul id="l2"></ul>
+<p class="aviso">Pasos según guías del juego. Confirmalos con los NPC, porque pueden cambiar.</p></div>
+</section>
+
+<section id="jefes">
+<div class="card"><h2>Jefes del Tercer Mar</h2>
+<label for="nj">Mi nivel</label><input id="nj" type="number" value="1915" inputmode="numeric">
+<div id="bj"></div>
+<p class="aviso">Niveles y premios según guías y wikis del juego. Los jefes grandes conviene hacerlos en equipo.</p></div>
+<div class="card"><h2>Cuántos niveles da cada jefe</h2><table id="tl"></table>
+<p class="aviso">Los jefes dan niveles extra además de Beli y fragmentos, así que ayudan a subir más rápido.</p></div>
+</section>
+
+<section id="mar">
+<div class="card"><h2>Bestias marinas y eventos</h2>
+<ul class="pl">
+<li><b>Niveles de peligro del mar (1 a 6):</b> empiezan cuando pasás unas rocas al alejarte de las islas. Cuanto más lejos, más alto el nivel.</li>
+<li><b>Bestia marina:</b> aparece navegando en bote en los niveles de peligro 1 a 6. Da 1 nivel, de 150 a 250 fragmentos y entre 100.000 y 250.000 de Beli (el doble con el pase de doble dinero).</li>
+<li><b>Terrorshark:</b> aparece en los niveles de peligro 2 a 6. Da 1 nivel.</li>
+<li><b>Barco fantasma (Haunted Ship):</b> solo en el nivel de peligro 6.</li>
+<li><b>Leviathan:</b> el evento más difícil. Hay que llegar al nivel de peligro 6 con tu tripulación para encontrar la Dimensión Congelada. Da 5 niveles.</li>
+</ul></div>
+<div class="card"><h2>Tips que sirven</h2>
+<ul class="pl">
+<li>Invertí en defensa y vida para aguantar a las bestias marinas.</li>
+<li>Navegá en equipo: se juntan más premios y es más seguro.</li>
+<li>La Isla Espejo tiene cofres de fragmentos.</li>
+<li>Los cofres del Tercer Mar pagan unos 10.000 de Beli los de diamante y unos 5.000 los de oro.</li>
+<li>Para armar raids se pide nivel 1.100 o más y comprar microchips en Castle on the Sea.</li>
+<li>Los fragmentos sirven para estilos de pelea, cambiar de raza y más.</li>
+<li><b>Seguridad:</b> nunca des tu contraseña, ni uses scripts o páginas que prometen subir de nivel por vos. Te pueden robar o banear la cuenta.</li>
+</ul>
+<p class="aviso">Los premios y porcentajes cambian con las actualizaciones. Fijate siempre en el juego.</p></div>
+</section>
+
+<section id="frutas">
+<div class="card"><h2>Mejores frutas para farmear</h2>
+<ul class="pl">
+<li><b>Buddha:</b> la más recomendada para subir de nivel. Tiene mucho alcance, aguanta golpes y sirve para raids. Cuesta unos 1.200.000 de Beli.</li>
+<li><b>Magma:</b> muy buena para daño en área, jefes y eventos de mar. Cuesta alrededor de un millón.</li>
+<li><b>Light:</b> rápida para moverse y barata, unos 650.000 de Beli. Mejor en los primeros mares.</li>
+<li><b>Dragon:</b> la mejor para farmear en el Tercer Mar, pero es muy difícil de conseguir.</li>
+<li><b>Dough:</b> brilla en raids y combos de PvP, y cuesta unos 2.800.000 de Beli. Despertada rinde más.</li>
+<li><b>Kitsune / T-Rex:</b> frutas míticas espectaculares para movimiento, farm y PvP.</li>
+</ul>
+<p class="aviso">Despertar la fruta mejora mucho el farmeo (Buddha, Dough, Magma y otras). Para farmear se recomienda subir primero Melee y Defensa.</p></div>
+<div class="card"><h2>Razas</h2>
+<ul class="pl">
+<li><b>Human:</b> enfocada en daño explosivo.</li>
+<li><b>Rabbit (Mink):</b> la más rápida, excelente para movilidad.</li>
+<li><b>Shark (Fishman):</b> máxima defensa y nadar en el agua sin daño.</li>
+<li><b>Angel:</b> curación, saltos altos y vuelo.</li>
+<li><b>Ghoul:</b> robo de vida mientras atacas.</li>
+<li><b>Cyborg:</b> daño en área e interrupción de combos.</li>
+<li><b>Draco:</b> transformación dragón con gran resistencia.</li>
+</ul>
+</div>
+</section>
+
+<section id="armas">
+<div class="card"><h2>Espadas del Tercer Mar</h2>
+<ul class="pl">
+<li><b>Cursed Dual Katana (CDK):</b> de las más fuertes. Se hace con Yama y Tushita (350 maestría en ambas y nivel 2200+).</li>
+<li><b>Yama:</b> se consigue con quests de Elite o Player Hunter.</li>
+<li><b>Tushita:</b> puzzle de antorchas y derrotar a Longma.</li>
+<li><b>Hallow Scythe:</b> la suelta el Soul Reaper en Castillo Embrujado (5%).</li>
+<li><b>Shark Anchor:</b> la suelta el Terrorshark con Monster Magnet (1%).</li>
+<li><b>True Triple Katana (TTK):</b> 300 maestría en Wando, Shisui y Saddi + $2.000.000 Beli.</li>
+</ul></div>
+
+<div class="card"><h2>Estilos de pelea</h2>
+<ul class="pl">
+<li><b>Sharkman Karate:</b> $2.500.000 Beli, 5.000 fragmentos y Water Key. Excelente con Buddha.</li>
+<li><b>Electric Claw:</b> en Tortuga Flotante. Pide 400 de maestría en Electric.</li>
+<li><b>Dragon Talon:</b> pide Fire Essence y 400 de maestría en Dragon Breath.</li>
+<li><b>Godhuman:</b> 400 maestría en Superhuman, Death Step, Electric Claw, Sharkman Karate y Dragon Talon + $5M Beli y 5K fragmentos.</li>
+<li><b>Sanguine Art:</b> lo enseña Shafi en Tiki Outpost con el corazón del Leviathan.</li>
+</ul></div>
+</section>
+
+<section id="raids">
+<div class="card"><h2>Cómo hacer una raid</h2>
+<ul class="pl">
+<li>Nivel 1.100+ para hostear.</li>
+<li>Microchip básico: $100.000 Beli o fruta física.</li>
+<li>Microchip avanzado (Dough/Phoenix): 1.000 fragmentos o fruta de +$1M Beli.</li>
+<li>Buddha es la mejor fruta para resistir las oleadas.</li>
+</ul></div>
+<div class="card"><h2>Cómo juntar fragmentos</h2>
+<ul class="pl">
+<li><b>Raids:</b> de 250 a 1.500+ fragmentos por victoria.</li>
+<li><b>Bestias marinas:</b> 150 a 250 fragmentos por derrotarla.</li>
+<li><b>Piratas de élite:</b> hablá con Elite Hunter en Castle on the Sea.</li>
+<li><b>Dough King:</b> otorga 2.000 fragmentos.</li>
+</ul></div>
+</section>
+</main>
+
+<script>
+var $=function(i){return document.getElementById(i)};
+function num(i){var v=parseFloat($(i).value);return isFinite(v)&&v>=0?v:0}
+function fmt(n){return Math.round(n).toLocaleString("es-UY")}
+function tiempo(h,hd){
+  if(h<=0)return "¡Ya llegaste!";
+  var t=fmt(h*10)/10; var d=hd>0?Math.ceil(h/hd):null;
+  return "<span class='big'>"+(Math.round(h*10)/10).toLocaleString("es-UY")+" horas</span><br>"+(d?"Son unos <b>"+d+" días</b> jugando "+hd+" h por día.":"Poné cuántas horas jugás por día.");
+}
+function calc(){
+  var f=Math.max(0,num("n2")-num("n1")), r=num("rn");
+  var h=r>0?f/r:0;
+  $("r1").innerHTML=r>0?(f<=0?"¡Ya llegaste a esa meta!":tiempo(h,num("hd"))+"<div class='small'>Faltan "+fmt(f)+" niveles. Al final cada nivel cuesta más, así que si tu ritmo baja 30% serían unas "+(Math.round(h/0.7*10)/10).toLocaleString("es-UY")+" horas.</div>"):"Poné cuántos niveles subís por hora.";
+  var fb=Math.max(0,num("b2")-num("b1")), rb=num("bh");
+  var hb=rb>0?fb/rb:0;
+  $("r2").innerHTML=rb>0?(fb<=0?"¡Ya tenés ese Beli!":tiempo(hb,num("bd"))+"<div class='small'>Faltan "+fmt(fb)+" de Beli. Las bestias marinas suelen pagar más por hora que las quests.</div>"):"Poné cuánto Beli ganás por hora.";
+}
+
+// LÓGICA DE IA ASISTENTE
+function handleKeyPress(e){
+  if(e.key === 'Enter') enviarPreguntaIA();
+}
+
+function enviarPreguntaIA(){
+  var input = $("chatInput");
+  var q = input.value.trim().toLowerCase();
+  if(!q) return;
+  
+  agregarMensajeChat(input.value, "msg-user");
+  input.value = "";
+  
+  setTimeout(function(){
+    var resp = responderIA(q);
+    agregarMensajeChat(resp, "msg-ia");
+  }, 400);
+}
+
+function agregarMensajeChat(txt, cls){
+  var box = $("chatBox");
+  var d = document.createElement("div");
+  d.className = "chat-msg " + cls;
+  d.textContent = txt;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+
+function responderIA(q){
+  if(q.includes("cdk") || q.includes("cursed dual") || q.includes("doble katana")){
+    return "⚔️ Para conseguir la Cursed Dual Katana (CDK) necesitas 350 de maestría en las espadas Yama y Tushita, tener nivel 2200+ y completar las 6 pruebas de los pergaminos en Mansion.";
+  }
+  if(q.includes("farmear") || q.includes("subir nivel") || q.includes("nivel rapido")){
+    return "🍌 La mejor fruta para farmear es Buddha despierta combinada con un estilo de pelea cuerpo a cuerpo (como Sharkman Karate). Pon tus puntos de stat en Melee y Defensa.";
+  }
+  if(q.includes("v4") || q.includes("raza v4") || q.includes("despertar raza")){
+    return "🧬 Para subir a Raza V4 debes derrotar a Rip Indra, conseguir el Fragmento Espejo del Dough King, buscar el Engranaje Azul en la Isla Espejo de noche y hacer la prueba en el Templo del Tiempo.";
+  }
+  if(q.includes("godhuman") || q.includes("dios humano")){
+    return "🥊 Godhuman pide 400 de maestría en 5 estilos: Superhuman, Death Step, Electric Claw, Sharkman Karate y Dragon Talon, más $5M de Beli y 5,000 fragmentos en Tortuga Flotante.";
+  }
+  if(q.includes("kitsune") || q.includes("dragon") || q.includes("leopard")){
+    return "🔥 Esas son frutas Míticas extremadamente valiosas. Son buenísimas para PvP y velocidad, pero cuestan bastante Beli en la tienda y son raras de encontrar.";
+  }
+  if(q.includes("fragmento") || q.includes("fragmentos")){
+    return "🔮 La mejor forma de farmear fragmentos es haciendo Raids en Castle on the Sea (dan hasta 1500+ por raid) o cazando Bestias Marinas en el Tercer Mar.";
+  }
+  if(q.includes("hola") || q.includes("buenas")){
+    return "¡Hola! ¿Qué duda tienes sobre Blox Fruits hoy? Puedes preguntarme sobre espadas, razas, frutas o jefes.";
+  }
+  return "🏴‍☠️ ¡Buena pregunta! Para eso te sugiero revisar la pestaña correspondiente en la app (Jefes, Armas, Frutas o Raids) donde tienes toda la información detallada paso a paso.";
+}
+
+// LÓGICA DE TRADEOS
+var FRUTAS_VALOR = [
+  {n:"Rocket", v:5000, r:"Común"},
+  {n:"Spin", v:7500, r:"Común"},
+  {n:"Chop", v:30000, r:"Común"},
+  {n:"Spring", v:60000, r:"Común"},
+  {n:"Bomb", v:80000, r:"Común"},
+  {n:"Smoke", v:100000, r:"Común"},
+  {n:"Spike", v:180000, r:"Común"},
+  {n:"Flame", v:250000, r:"Rara"},
+  {n:"Falcon", v:300000, r:"Rara"},
+  {n:"Ice", v:350000, r:"Rara"},
+  {n:"Sand", v:420000, r:"Rara"},
+  {n:"Dark", v:500000, r:"Rara"},
+  {n:"Diamond", v:600000, r:"Rara"},
+  {n:"Light", v:650000, r:"Rara"},
+  {n:"Rubber", v:750000, r:"Rara"},
+  {n:"Barrier", v:800000, r:"Rara"},
+  {n:"Magma", v:960000, r:"Rara"},
+  {n:"Quake", v:1000000, r:"Legendaria"},
+  {n:"Buddha", v:1200000, r:"Legendaria"},
+  {n:"Love", v:1300000, r:"Legendaria"},
+  {n:"Spider", v:1500000, r:"Legendaria"},
+  {n:"Sound", v:1700000, r:"Legendaria"},
+  {n:"Phoenix", v:1800000, r:"Legendaria"},
+  {n:"Portal", v:1900000, r:"Legendaria"},
+  {n:"Rumble", v:2100000, r:"Legendaria"},
+  {n:"Pain", v:2400000, r:"Legendaria"},
+  {n:"Blizzard", v:2200000, r:"Legendaria"},
+  {n:"Gravity", v:2500000, r:"Mítica"},
+  {n:"Mammoth", v:2700000, r:"Mítica"},
+  {n:"Dough", v:2800000, r:"Mítica"},
+  {n:"Shadow", v:2900000, r:"Mítica"},
+  {n:"Venom", v:3000000, r:"Mítica"},
+  {n:"Control", v:3200000, r:"Mítica"},
+  {n:"Spirit", v:3400000, r:"Mítica"},
+  {n:"Dragon", v:3500000, r:"Mítica"},
+  {n:"Leopard", v:5000000, r:"Mítica"},
+  {n:"Kitsune", v:8000000, r:"Mítica"}
+];
+
+function cargarSelectsTrade(){
+  var s1=$("tf1"), s2=$("tf2");
+  FRUTAS_VALOR.forEach(function(f, idx){
+    var opt1=document.createElement("option"), opt2=document.createElement("option");
+    opt1.value=idx; opt1.textContent=f.n + " (" + f.r + ")";
+    opt2.value=idx; opt2.textContent=f.n + " (" + f.r + ")";
+    s1.appendChild(opt1); s2.appendChild(opt2);
+  });
+  s2.selectedIndex = 18;
+}
+
+function evaluarTrade(){
+  var f1 = FRUTAS_VALOR[$("tf1").value];
+  var f2 = FRUTAS_VALOR[$("tf2").value];
+  var diff = f2.v - f1.v;
+  var pct = (diff / f1.v) * 100;
+  var elem = $("resTrade");
+  
+  if(Math.abs(pct) <= 15){
+    elem.className = "trade-res trade-f";
+    elem.innerHTML = "FAIR (Trade Parejo) ⚖️<div class='small'>Diferencia aproximada de valor muy pequeña.</div>";
+  } else if(pct > 15){
+    elem.className = "trade-res trade-w";
+    elem.innerHTML = "¡WIN! (Ganancia) 🎉<div class='small'>Estás recibiendo una fruta de mayor valor ("+f2.n+").</div>";
+  } else {
+    elem.className = "trade-res trade-l";
+    elem.innerHTML = "LOSE (Pérdida) ⚠️<div class='small'>Estás dando más valor del que recibes ("+f1.n+").</div>";
+  }
+}
+
+// LÓGICA TEMPORIZADOR
+var timerInterval = null, timerSegs = 3600;
+function updateTimerDisp(){
+  var m = Math.floor(timerSegs / 60);
+  var s = timerSegs % 60;
+  $("timeDisp").textContent = (m < 10 ? "0"+m : m) + ":" + (s < 10 ? "0"+s : s);
+}
+function toggleTimer(){
+  var btn = $("btnTimer");
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval = null;
+    btn.textContent = "Reanudar";
+    btn.style.background = "var(--sea)";
+  } else {
+    btn.textContent = "Pausar";
+    btn.style.background = "var(--gold)";
+    timerInterval = setInterval(function(){
+      if(timerSegs > 0){
+        timerSegs--;
+        updateTimerDisp();
+      } else {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        btn.textContent = "Iniciar 60m";
+        btn.style.background = "var(--sea)";
+        sonarAlarma();
+        alert("🍎 ¡Atención Franco! ¡Pasaron 60 minutos, es hora de buscar frutas físicas bajo los árboles!");
+      }
+    }, 1000);
+  }
+}
+function resetTimer(){
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerSegs = 3600;
+  updateTimerDisp();
+  $("btnTimer").textContent = "Iniciar 60m";
+  $("btnTimer").style.background = "var(--sea)";
+}
+function sonarAlarma(){
+  try {
+    var ctx = new (window.AudioContext || window.webkitAudioContext)();
+    var osc = ctx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+    osc.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 1.5);
+  } catch(e){}
+}
+
+// LÓGICA RULETA GACHA Y BELI GRATIS
+var miBeliVirtual = 500000;
+var miInventario = [];
+try { miBeliVirtual = parseInt(localStorage.getItem("bf_beli")) || 500000; } catch(e){}
+try { miInventario = JSON.parse(localStorage.getItem("bf_inv")) || []; } catch(e){}
+
+function updateRuletaUI(){
+  $("ruletaBeli").textContent = "$" + fmt(miBeliVirtual);
+  var invElem = $("invFrutas");
+  if(miInventario.length === 0){
+    invElem.innerHTML = "<span class='small'>Aún no tienes frutas en tu inventario virtual.</span>";
+  } else {
+    invElem.innerHTML = "";
+    miInventario.forEach(function(fName){
+      var span = document.createElement("span");
+      span.className = "inv-tag";
+      span.textContent = "🍎 " + fName;
+      invElem.appendChild(span);
+    });
+  }
+}
+
+function girarRuleta(){
+  if(miBeliVirtual < 100000){
+    alert("¡Necesitas al menos $100,000 Beli virtual! Presiona el botón verde de 'Ganar $200,000 Beli Virtual' para conseguir más.");
+    return;
+  }
+  miBeliVirtual -= 100000;
+  try { localStorage.setItem("bf_beli", miBeliVirtual); } catch(e){}
+  
+  var resElem = $("ruletaRes");
+  resElem.textContent = "🌀 Girando...";
+  
+  setTimeout(function(){
+    var rand = Math.random() * 100;
+    var frutaObtenida = FRUTAS_VALOR[0];
+    if(rand < 40) {
+      var comunes = FRUTAS_VALOR.filter(f => f.r === "Común");
+      frutaObtenida = comunes[Math.floor(Math.random()*comunes.length)];
+    } else if(rand < 75) {
+      var raras = FRUTAS_VALOR.filter(f => f.r === "Rara");
+      frutaObtenida = raras[Math.floor(Math.random()*raras.length)];
+    } else if(rand < 95) {
+      var leg = FRUTAS_VALOR.filter(f => f.r === "Legendaria");
+      frutaObtenida = leg[Math.floor(Math.random()*leg.length)];
+    } else {
+      var mit = FRUTAS_VALOR.filter(f => f.r === "Mítica");
+      frutaObtenida = mit[Math.floor(Math.random()*mit.length)];
+    }
+    
+    resElem.textContent = "🎉 ¡Te tocó: " + frutaObtenida.n + " (" + frutaObtenida.r + ")!";
+    miInventario.push(frutaObtenida.n);
+    try { localStorage.setItem("bf_inv", JSON.stringify(miInventario)); } catch(e){}
+    updateRuletaUI();
+  }, 1000);
+}
+
+function ganarBeliGratis(){
+  miBeliVirtual += 200000;
+  try { localStorage.setItem("bf_beli", miBeliVirtual); } catch(e){}
+  updateRuletaUI();
+  alert("🎉 ¡Conseguiste $200,000 de Beli virtual! Ya puedes volver a tirar la ruleta.");
+}
+
+var ISLAS=[
+ [1800,1974,"Tortuga Flotante","Quests del bosque profundo. El Capitán Elefante es jefe de nivel 1875."],
+ [1975,2074,"Castillo Embrujado","Buen lugar para seguir subiendo y para abrir cofres."],
+ [2075,2549,"Mar de las Golosinas","Zona avanzada: Cake Land, chocolate, caramelo. Acá aparece el Rey de la Masa."],
+ [2550,3000,"Islas del final","Zona de niveles altos, como Tiki Outpost. Mirá qué pide cada NPC."]
+];
+function isla(){
+  var n=num("nv"),h="",tb="<tr><th>Nivel</th><th>Isla</th></tr>";
+  var pick=null;
+  for(var i=0;i<ISLAS.length;i++){var s=ISLAS[i];if(n>=s[0]&&n<=s[1])pick=s;}
+  if(!pick){h=n<1800?"Todavía no estás en este tramo: con menos de 1800 mirá las islas del Tercer Mar de tu nivel.":"Pasaste el último rango que tengo. Mirá las quests nuevas en el juego."}
+  else{var falta=pick[1]+1-n;h="<b>"+pick[2]+"</b><div>"+pick[3]+"</div><div class='small'>Te quedan unos "+fmt(falta)+" niveles ahí antes de pasar a la siguiente zona.</div>"}
+  $("ri").innerHTML=h;
+  for(var j=0;j<ISLAS.length;j++){var q=ISLAS[j];tb+="<tr"+(pick===q?" class='me'":"")+"><td>"+q[0]+" a "+q[1]+"</td><td>"+q[2]+"</td></tr>"}
+  $("tb").innerHTML=tb;
+}
+var JEFES=[["Longma",2000,"Tercer Mar","Su puzzle da la espada Tushita."],["Esqueleto Maldito",2025,"Tercer Mar","Jefe del tramo alto del Tercer Mar."],["Soul Reaper",2100,"Castillo Embrujado","Se invoca con Hallow Essence en el altar del cementerio. Usa la Hallow Scythe."],["Cake Queen",2175,"Cake Land","Suelta la Buddy Sword."],["Cake Prince",2300,"Dimensional Shift (Cake Land)","Hay que matar 500 enemigos en Cake Land y hablar con Drip Mama. Da Pale Scarf, Spikey Trident y 3 niveles."],["Dough King",2300,"Dimensional Shift (Cake Land)","Pide el Cáliz Dulce. Da 6 niveles, 2.000 fragmentos, Fragmento Espejo y Pale Scarf. Tiene más de un millón de vida."],["Rip Indra (forma verdadera)",5000,"Castle on the Sea","Pide tres colores de aura (Snow White, Pure Red y Winter Sky) y activar tres botones. Da Valkyrie Helm y Dark Dagger."]];
+var NIV=[["Dough King",6],["Tyrant of the Skies",6],["Leviathan",5],["Darkbeard",3],["Greybeard",3],["Cake Prince",3],["Rip Indra (forma verdadera)",3],["Order",3],["Bestia marina",1],["Terrorshark",1]];
+function jefes(){
+  var n=num("nj"),h="";
+  JEFES.forEach(function(b){
+    var ok=n>=b[1],falta=b[1]-n;
+    h+="<div class='boss'><b>"+b[0]+"</b> <span class='chip"+(ok?" si":"")+"'>"+(ok?"Ya podés":"Faltan "+fmt(falta)+" niveles")+"</span><div class='small'>Nivel "+fmt(b[1])+" en "+b[2]+"</div><div>"+b[3]+"</div></div>";
+  });
+  $("bj").innerHTML=h;
+  var t="<tr><th>Jefe o evento</th><th>Niveles</th></tr>";
+  NIV.forEach(function(x){t+="<tr><td>"+x[0]+"</td><td>+"+x[1]+"</td></tr>"});
+  $("tl").innerHTML=t;
+}
+
+var L1=["Nivel 1800 o más","5.000 de experiencia en Instinct V1","Hacer la quest del Ciudadano (sombrero de mosquetero)","Juntar 5.000.000 de Beli","Hablar con el Hombre Hambriento en la Tortuga Flotante y pagarle"];
+
+var RAZAS_PASOS = {
+  "Angel": ["Desbloquear Raza V3","Derrotar a Rip Indra","Juntar 10 Cacao Conjurado","Conseguir el Cáliz de Dios y fabricar el Cáliz Dulce","Derrotar al Rey de la Masa para el Fragmento Espejo","Encontrar el engranaje azul en la Isla Espejo de noche","Usar la habilidad V3 mirando la luna llena","Completar la prueba del Templo del Tiempo (Prueba del Vuelo)"],
+  "Human": ["Desbloquear Raza V3","Derrotar a Rip Indra","Conseguir el Fragmento Espejo del Rey de la Masa","Encontrar el engranaje azul de noche","Usar habilidad V3 mirando la luna en el Templo del Tiempo","Completar la prueba del Templo del Tiempo (Prueba de la Fuerza)"],
+  "Mink": ["Desbloquear Raza V3","Derrotar a Rip Indra","Conseguir el Fragmento Espejo del Rey de la Masa","Encontrar el engranaje azul de noche","Usar habilidad V3 mirando la luna","Completar la prueba del Templo del Tiempo (Prueba de Velocidad / Laberinto)"],
+  "Shark": ["Desbloquear Raza V3","Derrotar a Rip Indra","Conseguir el Fragmento Espejo del Rey de la Masa","Encontrar el engranaje azul de noche","Usar habilidad V3 mirando la luna","Completar la prueba del Templo del Tiempo (Prueba de Resistencia / Sea Beast)"],
+  "Ghoul": ["Desbloquear Raza V3","Derrotar a Rip Indra","Conseguir el Fragmento Espejo del Rey de la Masa","Encontrar el engranaje azul de noche","Usar habilidad V3 mirando la luna","Completar la prueba del Templo del Tiempo (Prueba del Vampirismo)"],
+  "Cyborg": ["Desbloquear Raza V3","Derrotar a Rip Indra","Conseguir el Fragmento Espejo del Rey de la Masa","Encontrar el engranaje azul de noche","Usar habilidad V3 mirando la luna","Completar la prueba del Templo del Tiempo (Prueba de Energía)"],
+  "Draco": ["Desbloquear Raza V3","Derrotar a Rip Indra","Conseguir el Fragmento Espejo del Rey de la Masa","Encontrar el engranaje azul de noche","Usar habilidad V3 mirando la luna","Completar la prueba del Templo del Tiempo (Prueba del Dragón)"]
+};
+
+function cambiarRaza(){
+  var r = $("selRaza").value;
+  lista("l2", RAZAS_PASOS[r] || RAZAS_PASOS["Angel"], "bf-v4-"+r, "p2", "g2");
+}
+
+function lista(id,arr,key,pid,gid){
+  var saved={};try{saved=JSON.parse(localStorage.getItem(key)||"{}")}catch(e){}
+  var ul=$(id);ul.innerHTML="";
+  arr.forEach(function(t,i){
+    var li=document.createElement("li"),lb=document.createElement("label"),c=document.createElement("input"),sp=document.createElement("span");
+    c.type="checkbox";c.checked=!!saved[i];sp.textContent=t;
+    c.onchange=function(){saved[i]=c.checked;try{localStorage.setItem(key,JSON.stringify(saved))}catch(e){}cuenta()};
+    lb.appendChild(c);lb.appendChild(sp);li.appendChild(lb);ul.appendChild(li);
+  });
+  function cuenta(){var k=0;arr.forEach(function(_,i){if(saved[i])k++});$(pid).textContent=k+" de "+arr.length+" listos";$(gid).style.width=(k/arr.length*100)+"%"}
+  cuenta();
+}
+
+["n1","n2","rn","hd","b1","b2","bh","bd"].forEach(function(i){$(i).addEventListener("input",calc)});
+$("nv").addEventListener("input",isla);
+$("nj").addEventListener("input",jefes);
+document.querySelectorAll("nav button").forEach(function(b){b.onclick=function(){
+  document.querySelectorAll("nav button").forEach(function(x){x.setAttribute("aria-selected",x===b)});
+  document.querySelectorAll("section").forEach(function(s){s.classList.toggle("on",s.id===b.dataset.t)});
+}});
+
+cargarSelectsTrade();
+updateTimerDisp();
+updateRuletaUI();
+calc();isla();jefes();
+lista("l1",L1,"bf-v2","p1","g1");
+cambiarRaza();
+</script>
+</body>
+</html>
